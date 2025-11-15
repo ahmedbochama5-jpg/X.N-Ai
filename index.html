@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XN.Ai - الذكاء الاصطناعي المتطور</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .nav-links a {
+            margin-right: 30px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .hero {
+            margin-top: 100px;
+            text-align: center;
+            padding: 100px 20px;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        .features {
+            background: white;
+            padding: 100px 20px;
+            border-radius: 30px 30px 0 0;
+            margin-top: -50px;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 60px;
+            color: #333;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .installation {
+            padding: 100px 20px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: left;
+            margin: 40px auto;
+            max-width: 600px;
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">XN.Ai</div>
+            <div class="nav-links">
+                <a href="#features">المميزات</a>
+                <a href="#installation">التثبيت</a>
+                <a href="https://github.com/ahmedbochama5-jpg/X.N-Ai" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>XN.Ai 🤖</h1>
+            <p>الذكاء الاصطناعي المتطور للمحادثة الذكية</p>
+            <p>مشروع مفتوح المصدر يدعم اللغة العربية والإنجليزية</p>
+            <a href="https://github.com/ahmedbochama5-jpg/X.N-Ai" class="cta-button" target="_blank">
+                ⭐ Star على GitHub
+            </a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">🎯 مميزات XN.Ai</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>محادثة ذكية</h3>
+                    <p>تحدث بشكل طبيعي مع الذكاء الاصطناعي المدرب على محادثات بشرية</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>دعم متعدد اللغات</h3>
+                    <p>يدعم اللغة العربية والإنجليزية والعديد من اللغات الأخرى</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>أداء عالي</h3>
+                    <p>مبني على تقنيات Transformers الحديثة لأفضل النتائج</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>مفتوح المصدر</h3>
+                    <p>يمكن للجميع المساهمة والتطوير على المشروع</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>سهل التطوير</h3>
+                    <p>هيكل برمجي نظيف وسهل للتعديل والإضافة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🆓</div>
+                    <h3>مجاني بالكامل</h3>
+                    <p>لا توجد أي تكاليف أو اشتراكات</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="installation" id="installation">
+        <div class="container">
+            <h2 class="section-title">🚀 التثبيت السريع</h2>
+            <p>اتبع هذه الخطوات البسيطة لتشغيل XN.Ai على جهازك</p>
+            
+            <div class="code-block">
+                <code>
+# 1. استنساخ المشروع<br>
+git clone https://github.com/ahmedbochama5-jpg/X.N-Ai.git<br>
+<br>
+# 2. الدخول للمجلد<br>
+cd X.N-Ai<br>
+<br>
+# 3. تثبيت المتطلبات<br>
+pip install -r requirements.txt<br>
+<br>
+# 4. تشغيل البرنامج<br>
+python main.py<br>
+                </code>
+            </div>
+            
+            <a href="https://github.com/ahmedbochama5-jpg/X.N-Ai/archive/refs/heads/main.zip" class="cta-button">
+                📥 تحميل المشروع
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2024 XN.Ai - مشروع مفتوح المصدر</p>
+            <p>طورت بواسطة أحمد بوشامة | ❤️ من المجتمع للمجتمع</p>
+            <p>
+                <a href="https://github.com/ahmedbochama5-jpg/X.N-Ai" style="color: #fff; margin: 0 10px;">GitHub</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // تأثير سلس للروابط
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // تأثير الظهور للعناصر
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // تطبيق التأثير على العناصر
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
