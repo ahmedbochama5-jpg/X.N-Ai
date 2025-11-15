@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XN.Ai - محادثة مباشرة</title>
+    <title>XN.Ai - ذكاء اصطناعي حقيقي</title>
     <style>
         * {
             margin: 0;
@@ -32,11 +32,21 @@
             color: #667eea;
         }
         
+        .status {
+            font-size: 14px;
+            color: #28a745;
+            margin-top: 5px;
+        }
+        
+        .status.offline {
+            color: #dc3545;
+        }
+        
         .chat-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
             background: white;
             border-radius: 15px;
@@ -50,12 +60,19 @@
             padding: 20px;
             overflow-y: auto;
             max-height: 60vh;
+            background: #fafafa;
         }
         
         .message {
             margin-bottom: 15px;
             display: flex;
             align-items: flex-start;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .user-message {
@@ -71,6 +88,7 @@
             padding: 12px 18px;
             border-radius: 18px;
             word-wrap: break-word;
+            line-height: 1.4;
         }
         
         .user-message .message-bubble {
@@ -80,20 +98,23 @@
         }
         
         .bot-message .message-bubble {
-            background: #f1f3f4;
+            background: #ffffff;
             color: #333;
             border-bottom-left-radius: 5px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .message-avatar {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             margin: 0 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 18px;
         }
         
         .user-message .message-avatar {
@@ -115,16 +136,21 @@
         .chat-input-wrapper {
             display: flex;
             gap: 10px;
+            align-items: flex-end;
         }
         
         #chat-input {
             flex: 1;
-            padding: 12px 15px;
+            padding: 15px;
             border: 2px solid #ddd;
-            border-radius: 25px;
+            border-radius: 12px;
             outline: none;
             font-size: 16px;
             transition: border-color 0.3s;
+            font-family: inherit;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
         }
         
         #chat-input:focus {
@@ -132,23 +158,26 @@
         }
         
         #send-button {
-            padding: 12px 25px;
+            padding: 15px 25px;
             background: #007bff;
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 16px;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            height: 50px;
         }
         
         #send-button:hover {
             background: #0056b3;
+            transform: translateY(-1px);
         }
         
         #send-button:disabled {
             background: #ccc;
             cursor: not-allowed;
+            transform: none;
         }
         
         .typing-indicator {
@@ -158,11 +187,60 @@
             font-style: italic;
         }
         
+        .typing-dots {
+            display: inline-block;
+        }
+        
+        .typing-dots span {
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+        
         .welcome-message {
             text-align: center;
             color: #666;
             padding: 20px;
             font-size: 14px;
+            background: white;
+            margin: 10px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .controls {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .control-btn {
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #545b62;
         }
         
         @media (max-width: 768px) {
@@ -174,28 +252,47 @@
                 margin: 10px auto;
                 width: 98%;
             }
+            
+            .message-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="logo">XN.Ai - محادثة مباشرة 🤖</div>
+        <div class="logo">XN.Ai - ذكاء اصطناعي حقيقي 🤖</div>
+        <div class="status" id="status">● الخادم متصل</div>
     </div>
     
     <div class="chat-container">
+        <div class="controls">
+            <button class="control-btn" onclick="clearHistory()">🗑️ مسح المحادثة</button>
+            <button class="control-btn" onclick="checkStatus()">🔄 فحص الحالة</button>
+        </div>
+        
         <div class="chat-messages" id="chat-messages">
             <div class="welcome-message">
-                مرحباً! أنا XN.Ai، مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟
+                <strong>مرحباً! أنا XN.Ai</strong><br>
+                ذكاء اصطناعي حقيقي يستخدم نموذج DialoGPT المتقدم. يمكنني التحدث معك في أي موضوع!
             </div>
         </div>
         
         <div class="typing-indicator" id="typing-indicator">
-            XN.Ai يكتب...
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-bubble">
+                    XN.Ai يكتب<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>
+                </div>
+            </div>
         </div>
         
         <div class="chat-input-container">
             <div class="chat-input-wrapper">
-                <input type="text" id="chat-input" placeholder="اكتب رسالتك هنا..." autocomplete="off">
+                <textarea id="chat-input" placeholder="اكتب رسالتك هنا... (Enter للإرسال, Shift+Enter للسطر جديد)" 
+                         rows="1" autocomplete="off"></textarea>
                 <button id="send-button">إرسال</button>
             </div>
         </div>
@@ -208,33 +305,91 @@
                 this.chatInput = document.getElementById('chat-input');
                 this.sendButton = document.getElementById('send-button');
                 this.typingIndicator = document.getElementById('typing-indicator');
+                this.statusIndicator = document.getElementById('status');
+                
+                this.apiUrl = 'http://localhost:5000'; // تغيير هذا إذا نشرت على السحابة
+                this.isOnline = false;
                 
                 this.setupEventListeners();
-                this.addBotMessage('مرحباً! أنا XN.Ai، مساعدك الذكي. يمكنني التحدث معك في أي موضوع تريده. كيف حالك اليوم؟ 😊');
+                this.checkServerStatus();
             }
             
             setupEventListeners() {
                 this.sendButton.addEventListener('click', () => this.sendMessage());
-                this.chatInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
+                
+                this.chatInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
                         this.sendMessage();
                     }
                 });
+                
+                // تعديل ارتفاع textarea تلقائياً
+                this.chatInput.addEventListener('input', () => {
+                    this.chatInput.style.height = 'auto';
+                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 120) + 'px';
+                });
             }
             
-            sendMessage() {
+            async checkServerStatus() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/status`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'running') {
+                        this.isOnline = true;
+                        this.statusIndicator.textContent = '● الخادم متصل';
+                        this.statusIndicator.className = 'status';
+                    } else {
+                        this.setOffline();
+                    }
+                } catch (error) {
+                    this.setOffline();
+                }
+            }
+            
+            setOffline() {
+                this.isOnline = false;
+                this.statusIndicator.textContent = '● الخادم غير متصل';
+                this.statusIndicator.className = 'status offline';
+            }
+            
+            async sendMessage() {
                 const message = this.chatInput.value.trim();
-                if (!message) return;
+                if (!message || !this.isOnline) return;
                 
                 this.addUserMessage(message);
                 this.chatInput.value = '';
+                this.chatInput.style.height = 'auto';
+                this.setSendButtonState(true);
                 this.showTypingIndicator();
                 
-                // محاكاة استجابة الذكاء الاصطناعي (ستستبدل هذا بالاتصال الحقيقي بالخادم)
-                setTimeout(() => {
+                try {
+                    const response = await this.getBotResponse(message);
+                    this.addBotMessage(response);
+                } catch (error) {
+                    this.addBotMessage('عذراً، حدث خطأ في الاتصال بالخادم. تأكد من تشغيل الخادم المحلي.');
+                } finally {
                     this.hideTypingIndicator();
-                    this.generateBotResponse(message);
-                }, 1000 + Math.random() * 2000);
+                    this.setSendButtonState(false);
+                }
+            }
+            
+            async getBotResponse(userMessage) {
+                const response = await fetch(`${this.apiUrl}/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                return data.reply;
             }
             
             addUserMessage(message) {
@@ -268,6 +423,11 @@
                 this.typingIndicator.style.display = 'none';
             }
             
+            setSendButtonState(isSending) {
+                this.sendButton.disabled = isSending;
+                this.sendButton.textContent = isSending ? 'جاري الإرسال...' : 'إرسال';
+            }
+            
             scrollToBottom() {
                 setTimeout(() => {
                     this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
@@ -280,49 +440,36 @@
                 return div.innerHTML;
             }
             
-            generateBotResponse(userMessage) {
-                const responses = {
-                    'مرحبا': ['مرحباً بك! 😊', 'أهلاً وسهلاً! كيف يمكنني مساعدتك؟', 'مرحباً! سعيد برؤيتك!'],
-                    'كيف حالك': ['أنا بخير، شكراً لسؤالك! كيف حالك أنت؟', 'الحمدلله، مستعد لمساعدتك!', 'بخير دائماً عندما أتحدث معك!'],
-                    'شكرا': ['العفو! 😊', 'لا شكر على واجب!', 'سعيد لأنني استطعت المساعدة!'],
-                    'السلام عليكم': ['وعليكم السلام ورحمة الله وبركاته! كيف يمكنني خدمتك؟'],
-                    'اسمك': ['أنا XN.Ai! مساعدك الذكي المطور بواسطة أحمد بوشامة 🤖'],
-                    'ماذا تفعل': ['أنا هنا للتحدث معك ومساعدتك في أي استفسار لديك! 💫'],
-                    'احبك': ['أنا أيضاً أحب التحدث معك! 😍', 'هذا لطيف منك! شكراً 💕'],
-                    'وداعا': ['مع السلامة! أتمنى لك يوماً رائعاً 👋', 'إلى اللقاء! لا تتردد في العودة 💫']
-                };
-                
-                // البحث عن رد مناسب
-                let response = "هذا مثير للاهتمام! هل يمكنك إخباري بالمزيد؟";
-                const lowerMessage = userMessage.toLowerCase();
-                
-                for (const [key, answers] of Object.entries(responses)) {
-                    if (lowerMessage.includes(key.toLowerCase())) {
-                        response = answers[Math.floor(Math.random() * answers.length)];
-                        break;
-                    }
+            async clearHistory() {
+                try {
+                    await fetch(`${this.apiUrl}/clear`, { method: 'POST' });
+                    this.chatMessages.innerHTML = `
+                        <div class="welcome-message">
+                            <strong>تم مسح المحادثة</strong><br>
+                            ابدأ محادثة جديدة!
+                        </div>
+                    `;
+                } catch (error) {
+                    alert('خطأ في مسح المحادثة: ' + error.message);
                 }
-                
-                // إذا كان السؤال طويل، نعطي رد أكثر ذكاء
-                if (userMessage.length > 20) {
-                    const smartResponses = [
-                        "رائع! هذا موضوع شيق. من وجهة نظري، أعتقد أن هذا يحتاج لمزيد من النقاش.",
-                        "ممتع جداً! لدي بعض الأفكار حول هذا الموضوع...",
-                        "شكراً لمشاركة هذا معي! هل تريد أن أعطيك رأيي في هذا الموضوع؟",
-                        "هذا سؤال عميق! دعني أفكر قليلاً وأعطيك أفضل إجابة ممكنة.",
-                        "أحب طريقة تفكيرك! هذا يستحق التحليل المنطقي."
-                    ];
-                    response = smartResponses[Math.floor(Math.random() * smartResponses.length)];
-                }
-                
-                this.addBotMessage(response);
             }
         }
         
-        // بدء المحادثة عند تحميل الصفحة
+        // إنشاء كائن المحادثة
+        let chatApp;
+        
         document.addEventListener('DOMContentLoaded', () => {
-            new XNAiChat();
+            chatApp = new XNAiChat();
         });
+        
+        // دوال عامة للاستخدام من HTML
+        function clearHistory() {
+            if (chatApp) chatApp.clearHistory();
+        }
+        
+        function checkStatus() {
+            if (chatApp) chatApp.checkServerStatus();
+        }
     </script>
 </body>
 </html>
